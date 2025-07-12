@@ -10,12 +10,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 
 
-export async function generateMetadata() {
-  return {
-    title: `Success | AIvana`,
-    description: `Product succesfully ordered`,
-  };
-}
+
 
 export default function SuccessPage() {
   const searchParams = useSearchParams()
