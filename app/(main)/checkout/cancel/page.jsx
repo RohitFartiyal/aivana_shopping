@@ -8,12 +8,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import Link from "next/link"
 
-export async function generateMetadata() {
-  return {
-    title: `Cancel | AIvana`,
-    description: `Product failed to order`,
-  };
-}
+
 
 export default function PaymentDeclined() {
   return (
