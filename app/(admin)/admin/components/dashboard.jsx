@@ -12,7 +12,7 @@ console.log(dashData)
 console.log(totalBank)
 console.log(totalCash)
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 sm:px-0 px-1">
       {/* <h1 className="text-3xl font-bold text-gray-800 mb-2">DashBoard</h1> */}
       <Tabs defaultValue="overview" className="mt-3" >
         <TabsList>
@@ -91,7 +91,7 @@ console.log(totalCash)
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <h3 className="font-medium text-sm mb-2">Product Inventory</h3>
                     <div className="flex items-center">
@@ -140,13 +140,13 @@ console.log(totalCash)
                     <span className="text-3xl font-bold text-blue-600">
                       {dashData.data.order.sold}
                     </span>
-                    <p className="text-sm text-gray-600 mt-1">Products Sold</p>
+                    <p className="sm:text-sm text-xs text-gray-600 mt-1">Products Sold</p>
                   </div>
                   <div className="text-center">
                     <span className="text-3xl font-bold text-amber-600">
                       {dashData.data.order.pending}
                     </span>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="sm:text-sm text-xs text-gray-600 mt-1">
                       Upcoming Orders
                     </p>
                   </div>
@@ -156,7 +156,7 @@ console.log(totalCash)
 
 
                     </span>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="sm:text-sm text-xs text-gray-600 mt-1">
                       Inventory Utilization
                     </p>
                   </div>
@@ -226,7 +226,7 @@ console.log(totalCash)
             </CardHeader>
             <CardContent >
               <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid sm:grid-cols-2 grid-cols-1 gap-6">
                   {/* Conversion Rate Card */}
                   <div className="bg-gray-50 rounded-lg p-4">
                     <h3 className="text-lg font-medium mb-2">
