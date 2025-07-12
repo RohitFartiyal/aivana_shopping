@@ -1,0 +1,177 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id          String      @id @default(uuid())
+  clerkUserId String      @unique // clerk user id
+  email       String      @unique
+  name        String?
+  imageUrl    String?
+  phone       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  role        UserRole    @default(USER)
+  cart        UserCart[]
+  wishlisted  UserSaved[]
+  shopping    Shopping[]
+  review      Reviews[]
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+// done
+model Product {
+  id          String         @id @default(uuid())
+  name        String
+  brand       String
+  price       Int
+  ratting     Decimal        @db.Decimal(10, 2)
+  discount    Int?
+  category    String
+  dressType   String
+  description String
+  status      productStatus  @default(AVAILABLE)
+  featured    Boolean        @default(false)
+  cart        UserCart[]
+  wishlisted  UserSaved[]
+  reviews     Reviews[]
+  colors      ColorSection[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([name])
+  @@index([ratting])
+  @@index([price])
+  @@index([status])
+  @@index([discount])
+  @@index([category])
+  @@index([dressType])
+  @@index([featured])
+}
+
+model ColorSection {
+  id        String   @id @default(uuid())
+  color     String
+  size      String[]
+  images    String[] // Image URLs for this color
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([color])
+  @@index([size])
+}
+
+enum productStatus {
+  AVAILABLE
+  UNAVAILABLE
+  SOLD
+}
+
+// done
+model UserCart {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  size      String
+  color     String
+  quantity  Int
+  image     String
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  savedAt   DateTime @default(now())
+
+  @@unique([userId, productId])
+}
+
+model UserSaved {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  savedAt   DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@index([productId])
+}
+
+// done
+model Shopping {
+  id              String         @id @default(uuid())
+  items           Items[]
+  subTotal        Int
+  discount        Int
+  delivery        Int
+  total           Int
+  country         String
+  Username        String
+  phone           String
+  payment         PaymentMode
+  shippingAddress String
+  billingAddress  String         @default("69 Maliwada Street, Autoville, 7th Floor Mumbai 69420")
+  status          ShoppingStatus @default(PENDING)
+  buyingDate      DateTime       @db.Date
+  userId          String
+  user            User           @relation(fields: [userId], references: [id])
+  notes           String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([userId])
+  @@index([buyingDate])
+  @@index([status])
+}
+
+model Items {
+  id         String    @id @default(uuid())
+  name       String
+  brand      String
+  discount   Int
+  price      Int
+  size       String
+  color      String
+  quantity   Int
+  image      String
+  Shopping   Shopping? @relation(fields: [shoppingId], references: [id])
+  shoppingId String?
+}
+
+model Reviews {
+  id        String  @id @default(uuid())
+  ratting   Int
+  review    String
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@index([userId])
+}
+
+enum PaymentMode {
+  CASH
+  NET_BANKING
+}
+
+enum ShoppingStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DEVLIVERED
+  CANCELED
+}
